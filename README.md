@@ -1,5 +1,12 @@
 # MyElm
 
+Delete web/elm/elm-stuff and web/elm/elm-package.json
+
+To start with elm: 
+	* Install elm package  `elm package install -y` and `elm package install evancz/elm-html -y`
+ 
+*Install node: `npm install`
+
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
@@ -7,6 +14,8 @@ To start your Phoenix app:
   * Install Node.js dependencies with `npm install`
   * Start Phoenix endpoint with `mix phoenix.server`
 
+`
+	
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
