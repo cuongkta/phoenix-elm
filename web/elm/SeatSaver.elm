@@ -4,14 +4,24 @@ import Html exposing (..)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import StartApp.Simple
+import StartApp
+import Effects exposing (Effects, Never)
+import Task exposing (Task)
 
-main : Signal Html
-main =
-  StartApp.Simple.start
-    { model = init
+app =
+  StartApp.start
+    { init = init
     , update = update
     , view = view
+    , inputs = []
     }
+main : Signal Html
+main =
+  app.html
+
+port tasks : Signal (Task Never ())
+port tasks =
+  app.tasks
     
 type alias Seat =
     { seatNo : Int
@@ -21,22 +31,25 @@ type alias Seat =
 type alias Model =
     List Seat
 
+init : (Model, Effects Action)
 init =
-  [ { seatNo = 1, occupied = False }
-  , { seatNo = 2, occupied = False }
-  , { seatNo = 3, occupied = False }
-  , { seatNo = 4, occupied = False }
-  , { seatNo = 5, occupied = False }
-  , { seatNo = 6, occupied = False }
-  , { seatNo = 7, occupied = False }
-  , { seatNo = 8, occupied = False }
-  , { seatNo = 9, occupied = True }
-  , { seatNo = 10, occupied = False }
-  , { seatNo = 11, occupied = False }
-  , { seatNo = 12, occupied = False }
-  , { seatNo = 13, occupied = False }
-  , { seatNo = 14, occupied = False }
-  ]
+  let
+    seats =
+      [ { seatNo = 1, occupied = False }
+      , { seatNo = 2, occupied = False }
+      , { seatNo = 3, occupied = False }
+      , { seatNo = 4, occupied = False }
+      , { seatNo = 5, occupied = False }
+      , { seatNo = 6, occupied = False }
+      , { seatNo = 7, occupied = False }
+      , { seatNo = 8, occupied = False }
+      , { seatNo = 9, occupied = False }
+      , { seatNo = 10, occupied = False }
+      , { seatNo = 11, occupied = False }
+      , { seatNo = 12, occupied = False }
+      ]
+  in
+    (seats, Effects.none)
 
 {-view =
     Html.text "Woo hoo, I'm in a View"-}
@@ -64,7 +77,7 @@ seatItem address seat =
 
 type Action = Toggle Seat
 
-update : Action -> Model -> Model
+update : Action -> Model -> (Model, Effects Action)
 update action model =
   case action of
     Toggle seatToToggle ->
@@ -74,4 +87,4 @@ update action model =
             { seatFromModel | occupied = not seatFromModel.occupied }
           else seatFromModel
       in
-        List.map updateSeat model
+        (List.map updateSeat model, Effects.none)
